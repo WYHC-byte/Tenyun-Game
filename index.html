@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>腾云游戏 - 探索无限可能</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                    },
+                    colors: {
+                        'tencent-blue': {
+                            100: '#EEF2FF',
+                            200: '#C7D2FE',
+                            300: '#A5B4FC',
+                            400: '#818CF8',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                            950: '#1E1B4B'
+                        },
+                        'tencent-gold': {
+                            100: '#FEF9C3',
+                            200: '#FEF08A',
+                            300: '#FDE047',
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                            700: '#A16207',
+                            800: '#854D0E',
+                            900: '#713F12',
+                            950: '#422006'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 5s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            }
+        }
+        
+        // 检测暗色模式
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+    <style>
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-gradient {
+            background: linear-gradient(90deg, #4338CA, #6366F1, #EAB308, #4338CA);
+            background-size: 300% 300%;
+            animation: gradientBG 8s ease infinite;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .card-gradient {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(45deg, #4338CA, #6366F1, #EAB308);
+        }
+
+        .shadow-highlight {
+            text-shadow: 0 0 10px rgba(255, 204, 77, 0.5);
+        }
+
+        .highlight-text {
+            position: relative;
+        }
+
+        .highlight-text::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(234, 179, 8, 0.3);
+            z-index: -1;
+            transform: skew(-12deg);
+        }
+
+        .scroll-arrow {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.8);
+        }
+
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .dark .loader {
+            background: #1E1B4B;
+        }
+
+        .loader-gone {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .loader-circle {
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            border: 4px solid transparent;
+            border-radius: 50%;
+            border-top-color: #6366F1;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-circle:nth-child(2) {
+            width: 48px;
+            height: 48px;
+            top: 8px;
+            left: 8px;
+            border-top-color: #EAB308;
+            animation-duration: 0.8s;
+            animation-direction: reverse;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .dragonfly {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .dragonfly-body {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 24px;
+            background: #EAB308;
+            border-radius: 4px;
+        }
+
+        .dragonfly-wings {
+            position: absolute;
+            width: 32px;
+            height: 16px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dragonfly-wing {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #4338CA, #6366F1);
+            opacity: 0.7;
+            border-radius: 50% 50% 0 50%;
+            animation: flutter 0.2s alternate infinite ease-in-out;
+        }
+
+        .dragonfly-wing:nth-child(1) {
+            left: 0;
+            top: -8px;
+            transform: rotate(-45deg);
+        }
+
+        .dragonfly-wing:nth-child(2) {
+            right: 0;
+            top: -8px;
+            transform: rotate(45deg);
+        }
+
+        .dragonfly-wing:nth-child(3) {
+            left: 0;
+            bottom: -8px;
+            transform: rotate(-135deg);
+        }
+
+        .dragonfly-wing:nth-child(4) {
+            right: 0;
+            bottom: -8px;
+            transform: rotate(135deg);
+        }
+
+        @keyframes flutter {
+            0% {
+                transform: rotate(-45deg) scale(1);
+            }
+            100% {
+                transform: rotate(-60deg) scale(1.05);
+            }
+        }
+
+        .dragonfly-wing:nth-child(2), .dragonfly-wing:nth-child(4) {
+            animation-delay: 0.1s;
+        }
+
+        /* 游戏卡片特效 */
+        .game-card {
+            transition: all 0.5s cubic-bezier(.25,.8,.25,1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+
+        .game-card:hover::before {
+            top: 100%;
+            left: 100%;
+        }
+
+        /* 视频背景 */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-tencent-blue-950 dark:text-white font-sans overflow-x-hidden min-h-screen">
+    <!-- 加载动画 -->
+    <div id="loader" class="loader">
+        <div class="loader-logo">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="dragonfly" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <div class="dragonfly-body"></div>
+                <div class="dragonfly-wings">
+                    <div class="dragonfly-wing"></div>
+                    <div class="dragonfly-wing"></div>
+                    <div class="dragonfly-wing"></div>
+                    <div class="dragonfly-wing"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3 z-10">
+                    <div class="dragonfly">
+                        <div class="dragonfly-body"></div>
+                        <div class="dragonfly-wings">
+                            <div class="dragonfly-wing"></div>
+                            <div class="dragonfly-wing"></div>
+                            <div class="dragonfly-wing"></div>
+                            <div class="dragonfly-wing"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-black tracking-wide text-white">腾云游戏</h1>
+                        <p class="text-xs font-light text-white/80 tracking-wider">TENYUN GAMES</p>
+                    </div>
+                </div>
+                
+                <nav class="hidden lg:flex space-x-8 z-10">
+                    <a href="index.html" class="text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">首页</a>
+                    <a href="https://www.tenyun.ltd" class="text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">关于腾云游戏</a>
+                    <a href="#game" class="text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">游戏产品</a>
+                    <a href="#news" class="text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">最新资讯</a>
+                    <a href="#footer" class="text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">加入我们</a>
+                    <a href="#footer5" class="text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">联系我们</a>
+                </nav>
+                
+                <!-- 移动菜单按钮 -->
+                <button id="menuToggle" class="lg:hidden text-white focus:outline-none z-10" aria-label="菜单">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 移动导航菜单 (默认隐藏) -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black/90 z-40 hidden">
+        <div class="h-full flex flex-col justify-center items-center">
+            <button id="closeMenu" class="absolute top-6 right-6 text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="flex flex-col space-y-8 text-center">
+                <a href="index.html" class="text-3xl text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">首页</a>
+                <a href="https://www.tenyun.ltd" class="text-3xl text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">关于腾云游戏</a>
+                <a href="#games" class="text-3xl text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">游戏产品</a>
+                <a href="#news" class="text-3xl text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">最新资讯</a>
+                <a href="#footer" class="text-3xl text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">加入我们</a>
+                <a href="#footer" class="text-3xl text-white hover:text-tencent-gold-300 transition-colors duration-300 font-medium tracking-wide">联系我们</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 英雄区 (全屏视频) -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <video class="video-background" autoplay loop muted playsinline>
+            <source src="https://g-game-1317274415.cos.ap-guangzhou.myqcloud.com/Ggame/videos/video1.94041431.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+        
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h2 data-aos="fade-up" data-aos-duration="1000" class="text-6xl md:text-8xl font-black tracking-wide text-white shadow-highlight mb-4">Spark <span class="text-gradient">More</span></h2>
+            <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" class="text-2xl md:text-4xl font-light tracking-widest text-white/90 mb-12">
+                <span class="highlight-text">去</span> 
+                <span class="highlight-text">发</span> 
+                <span class="highlight-text">现</span> 
+                <span class="highlight-text">无</span> 
+                <span class="highlight-text">限</span> 
+                <span class="highlight-text">可</span> 
+                <span class="highlight-text">能</span>
+            </p>
+            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                <a href="#games" class="inline-block bg-gradient-to-r from-tencent-blue-600 to-tencent-blue-800 hover:from-tencent-blue-700 hover:to-tencent-blue-900 text-white font-bold py-4 px-8 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                    探索游戏世界
+                </a>
+            </div>
+        </div>
+        
+        <!-- 向下滚动箭头 -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white scroll-arrow">
+            <a href="#games" class="block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- 游戏产品区 -->
+    <section id="games" class="py-24 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-tencent-blue-900/80 to-tencent-blue-950/80 dark:from-tencent-blue-950 dark:to-black -z-10"></div>
+        
+        <!-- 背景装饰 -->
+        <div class="absolute top-20 right-10 w-72 h-72 bg-tencent-gold-500/10 rounded-full blur-3xl -z-5"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-tencent-blue-500/10 rounded-full blur-3xl -z-5"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16">
+                <div>
+                    <h3 data-aos="fade-right" class="text-xl font-bold text-tencent-gold-400 uppercase tracking-widest mb-3">我们的作品</h3>
+                    <h2 data-aos="fade-right" data-aos-delay="200" class="text-4xl md:text-5xl font-black text-white leading-tight">
+                        <span class="block">为您精心打造的</span>
+                        <span class="relative">
+                            游戏产品
+                            <span class="absolute -bottom-3 left-0 h-1 w-24 bg-gradient-to-r from-tencent-gold-400 to-tencent-gold-500"></span>
+                        </span>
+                    </h2>
+                </div>
+                <a href="#" data-aos="fade-left" class="group mt-6 md:mt-0 flex items-center text-tencent-gold-400 hover:text-tencent-gold-300 transition-colors">
+                    <span class="mr-2 font-medium">更多游戏探索</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+
+            <!-- 游戏卡片容器 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Elyria 游戏卡片 -->
+                <div data-aos="fade-up" data-aos-delay="0" class="game-card rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-600/80 to-blue-900/80 backdrop-blur-md border border-blue-500/30 group">
+                    <div class="relative overflow-hidden h-80">
+                        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='320' viewBox='0 0 400 320'%3E%3Crect fill='%231d4ed8' width='400' height='320'/%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M0 160 L400 280 L0 320 Z'/%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M400 0 L0 100 L400 180 Z'/%3E%3C/svg%3E" alt="Elyria" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-blue-900/90 to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-tencent-gold-500 text-tencent-blue-900 text-xs font-bold px-2 py-1 rounded-full">冒险游戏</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-2xl font-black text-white mb-2 flex items-center">
+                            Elyria
+                            <span class="ml-2 bg-blue-500/30 text-xs py-1 px-2 rounded-full font-normal">与Square Airways合作</span>
+                        </h4>
+                        <p class="text-blue-100 mb-4 font-light">一场震撼人心的冒险，探索神秘世界，完成不可能的任务</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-blue-100">PC平台</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-blue-100">移动端</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-blue-100">开放世界</span>
+                        </div>
+                        <a href="#" class="inline-flex items-center text-tencent-gold-400 group-hover:text-tencent-gold-300 font-medium">
+                            了解详情
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 游戏平台卡片 -->
+                <div data-aos="fade-up" data-aos-delay="100" class="game-card rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-orange-600/80 to-orange-900/80 backdrop-blur-md border border-orange-500/30 group">
+                    <div class="relative overflow-hidden h-80">
+                        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='320' viewBox='0 0 400 320'%3E%3Crect fill='%23c2410c' width='400' height='320'/%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M0 160 L400 280 L0 320 Z'/%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M400 0 L0 100 L400 180 Z'/%3E%3C/svg%3E" alt="游戏平台" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-orange-900/90 to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-tencent-gold-500 text-orange-900 text-xs font-bold px-2 py-1 rounded-full">游戏平台</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-2xl font-black text-white mb-2">腾云游戏平台</h4>
+                        <p class="text-orange-100 mb-4 font-light">汇聚全球精品游戏，随时随地畅玩无限</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-orange-100">全平台</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-orange-100">多款游戏</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-orange-100">实时更新</span>
+                        </div>
+                        <a href="#" class="inline-flex items-center text-tencent-gold-400 group-hover:text-tencent-gold-300 font-medium">
+                            了解详情
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 地铁跑酷卡片 -->
+                <div data-aos="fade-up" data-aos-delay="200" class="game-card rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-600/80 to-green-900/80 backdrop-blur-md border border-green-500/30 group">
+                    <div class="relative overflow-hidden h-80">
+                        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='320' viewBox='0 0 400 320'%3E%3Crect fill='%2315803d' width='400' height='320'/%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M0 160 L400 280 L0 320 Z'/%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M400 0 L0 100 L400 180 Z'/%3E%3C/svg%3E" alt="地铁跑酷" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-green-900/90 to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-tencent-gold-500 text-green-900 text-xs font-bold px-2 py-1 rounded-full">怪谈游戏</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-2xl font-black text-white mb-2">逃离米花市</h4>
+                        <p class="text-green-100 mb-4 font-light">紧张刺激的冒险，挑战你的反应极限</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-green-100">移动端</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-green-100">怪谈游戏</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-green-100">热门</span>
+                        </div>
+                        <a href="#" class="inline-flex items-center text-tencent-gold-400 group-hover:text-tencent-gold-300 font-medium">
+                            了解详情
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 即将推出卡片 -->
+                <div data-aos="fade-up" data-aos-delay="300" class="game-card rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-purple-600/80 to-purple-900/80 backdrop-blur-md border border-purple-500/30 group">
+                    <div class="relative overflow-hidden h-80">
+                        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='320' viewBox='0 0 400 320'%3E%3Crect fill='%237e22ce' width='400' height='320'/%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M0 160 L400 280 L0 320 Z'/%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M400 0 L0 100 L400 180 Z'/%3E%3C/svg%3E" alt="即将推出" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-purple-900/90 to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-tencent-gold-500 text-purple-900 text-xs font-bold px-2 py-1 rounded-full">敬请期待</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-2xl font-black text-white mb-2">神秘新作</h4>
+                        <p class="text-purple-100 mb-4 font-light">腾云游戏重磅新作，即将震撼发布</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-purple-100">移动端</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-purple-100">新品类</span>
+                            <span class="text-xs bg-white/10 px-2 py-1 rounded-full text-purple-100">未公开</span>
+                        </div>
+                        <a href="#" class="inline-flex items-center text-tencent-gold-400 group-hover:text-tencent-gold-300 font-medium">
+                            敬请期待
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏特色展示 -->
+    <section class="py-24 relative bg-white dark:bg-black overflow-hidden">
+        <div class="container mx-auto px-4">
+            <!-- Elyria 游戏特色 -->
+            <div class="flex flex-col lg:flex-row items-center mb-20 relative">
+                <div class="absolute -top-20 -left-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl dark:bg-blue-700/20 -z-10"></div>
+                
+                <div data-aos="fade-right" class="lg:w-1/2 lg:pr-12 mb-10 lg:mb-0">
+                    <h3 class="text-lg font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3">旗舰游戏</h3>
+                    <h2 class="text-4xl font-black mb-6 dark:text-white">
+                        Elyria
+                        <span class="block text-lg font-normal italic text-gray-600 dark:text-gray-400 mt-1">与Square Airways合作开发</span>
+                    </h2>
+                    
+                    <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                        <span class="font-bold">Elyria</span>是一款令人叹为观止的冒险游戏，带你探索一个充满神秘与魔法的开放世界。游戏采用顶尖的图形技术，呈现出令人窒息的绚丽场景和栩栩如生的角色。
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">开放世界</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">自由探索广阔无垠的奇幻大陆</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">多人合作</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">与好友组队，共同面对挑战</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">实时战斗</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">紧张刺激的实时战斗系统</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">角色成长</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">深度角色培养与技能进阶系统</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            了解更多
+                        </a>
+                        <a href="#" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            预约测试
+                        </a>
+                    </div>
+                </div>
+                
+                <div data-aos="fade-left" class="lg:w-1/2 relative">
+                    <div class="rounded-xl overflow-hidden shadow-2xl relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-400/30 to-blue-800/50 mix-blend-overlay"></div>
+                        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect fill='%231d4ed8' width='600' height='400'/%3E%3Ctext fill='rgba(255,255,255,0.8)' font-family='Arial' font-size='36' font-weight='bold' x='50%' y='50%' text-anchor='middle'%3EElyria Game%3C/text%3E%3Cpath fill='rgba(255,255,255,0.2)' d='M0 200 L600 340 L0 400 Z'/%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M600 0 L0 100 L600 180 Z'/%3E%3C/svg%3E" alt="Elyria 游戏截图" class="w-full">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-tencent-gold-500/30 rounded-full blur-xl -z-10"></div>
+                </div>
+            </div>
+            
+            <!-- 游戏平台特色 -->
+            <div class="flex flex-col lg:flex-row-reverse items-center relative">
+                <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl dark:bg-orange-700/20 -z-10"></div>
+                
+                <div data-aos="fade-left" class="lg:w-1/2 lg:pl-12 mb-10 lg:mb-0">
+                    <h3 class="text-lg font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider mb-3">多元游戏平台</h3>
+                    <h2 class="text-4xl font-black mb-6 dark:text-white">
+                        腾云游戏平台
+                        <span class="block text-lg font-normal italic text-gray-600 dark:text-gray-400 mt-1">一站式游戏体验</span>
+                    </h2>
+                    
+                    <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                        腾云游戏平台汇聚全球精品游戏，打造一站式游戏体验中心。从热门大作到休闲小游戏，满足不同玩家的多样需求。多端同步，随时随地尽情畅玩。
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600 dark:text-orange-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
+                                    <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">多款游戏</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">超过100款精选游戏任你选择</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600 dark:text-orange-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm11 1H6v8l4-2 4 2V6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">游戏分类</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">多种游戏类型，满足不同需求</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600 dark:text-orange-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">热门推荐</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">精准推荐你喜欢的游戏内容</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600 dark:text-orange-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white mb-1">全平台支持</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">PC、移动端全平台同步畅玩</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            开始探索
+                        </a>
+                        <a href="#" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            查看游戏库
+                        </a>
+                    </div>
+                </div>
+                
+                <div data-aos="fade-right" class="lg:w-1/2 relative">
+                    <div class="rounded-xl overflow-hidden shadow-2xl relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-400/30 to-orange-800/50 mix-blend-overlay"></div>
+                        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect fill='%23c2410c' width='600' height='400'/%3E%3Ctext fill='rgba(255,255,255,0.8)' font-family='Arial' font-size='36' font-weight='bold' x='50%' y='50%' text-anchor='middle'%3E腾云游戏平台%3C/text%3E%3Cpath fill='rgba(255,255,255,0.2)' d='M0 200 L600 340 L0 400 Z'/%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M600 0 L0 100 L600 180 Z'/%3E%3C/svg%3E" alt="腾云游戏平台" class="w-full">
+                    </div>
+                    <div class="absolute -top-6 -left-6 w-32 h-32 bg-tencent-gold-500/30 rounded-full blur-xl -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 最新资讯区 -->
+    <section class="py-20 bg-gray-50 dark:bg-tencent-blue-950 relative overflow-hidden" id="news">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl dark:bg-blue-700/20 -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-72 h-72 bg-tencent-gold-500/10 rounded-full blur-3xl dark:bg-tencent-gold-700/20 -z-10"></div>
+        
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
+                <div>
+                    <h3 data-aos="fade-right" class="text-xl font-bold text-tencent-blue-600 dark:text-tencent-blue-400 uppercase tracking-widest mb-3">最新动态</h3>
+                    <h2 data-aos="fade-right" data-aos-delay="200" class="text-4xl font-black text-gray-900 dark:text-white leading-tight">
+                        <span class="block">腾云游戏</span>
+                        <span class="relative">
+                            常规资讯
+                            <span class="absolute -bottom-3 left-0 h-1 w-24 bg-gradient-to-r from-tencent-blue-500 to-tencent-blue-300"></span>
+                        </span>
+                    </h2>
+                </div>
+                <a href="#" data-aos="fade-left" class="group mt-6 md:mt-0 flex items-center text-tencent-blue-600 dark:text-tencent-blue-400 hover:text-tencent-blue-800 dark:hover:text-tencent-blue-300 transition-colors">
+                    <span class="mr-2 font-medium">查看全部资讯</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 新闻卡片1 -->
+                <div data-aos="fade-up" data-aos-delay="0" class="bg-white dark:bg-tencent-blue-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                    <div class="h-56 bg-tencent-blue-100 dark:bg-tencent-blue-800 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/40"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-xs font-semibold bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-full">公司新闻</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-3">2023-12-15</span>
+                        </div>
+                        <h4 class="font-bold text-xl text-gray-900 dark:text-white mb-3">Elyria 与 Square Airways 合作宣布</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">腾云游戏与Square Airways游戏工作室正式宣布合作开发冒险游戏Elyria，预计明年发布...</p>
+                        <a href="#" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm">
+                            阅读全文
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 新闻卡片2 -->
+                <div data-aos="fade-up" data-aos-delay="100" class="bg-white dark:bg-tencent-blue-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                    <div class="h-56 bg-orange-100 dark:bg-orange-900 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-orange-600/40"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-xs font-semibold bg-orange-100 dark:bg-orange-800 text-orange-600 dark:text-orange-300 px-2 py-1 rounded-full">产品动态</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-3">2023-11-30</span>
+                        </div>
+                        <h4 class="font-bold text-xl text-gray-900 dark:text-white mb-3">腾云游戏平台即将上线</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">腾云游戏平台预计下个月正式上线，将提供多款热门游戏，包括备受欢迎的地铁跑酷...</p>
+                        <a href="#" class="inline-flex items-center text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-medium text-sm">
+                            阅读全文
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 新闻卡片3 -->
+                <div data-aos="fade-up" data-aos-delay="200" class="bg-white dark:bg-tencent-blue-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                    <div class="h-56 bg-green-100 dark:bg-green-900 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-400/20 to-green-600/40"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-xs font-semibold bg-green-100 dark:bg-green-800 text-green-600 dark:text-green-300 px-2 py-1 rounded-full">招聘信息</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-3">2023-11-15</span>
+                        </div>
+                        <h4 class="font-bold text-xl text-gray-900 dark:text-white mb-3">腾云游戏招聘游戏开发人才</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">随着业务扩展，腾云游戏正在招聘多位游戏开发工程师和设计师，欢迎有志之士加入...</p>
+                        <a href="#" class="inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium text-sm">
+                            阅读全文
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-white dark:bg-black py-16 relative overflow-hidden" id="footer">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-tencent-blue-600 via-tencent-gold-500 to-tencent-blue-600"></div>
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row justify-between">
+                <div class="mb-12 lg:mb-0 lg:w-1/3 pr-8">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="dragonfly">
+                            <div class="dragonfly-body"></div>
+                            <div class="dragonfly-wings">
+                                <div class="dragonfly-wing"></div>
+                                <div class="dragonfly-wing"></div>
+                                <div class="dragonfly-wing"></div>
+                                <div class="dragonfly-wing"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black tracking-wide text-gray-900 dark:text-white">腾云游戏</h2>
+                            <p class="text-xs font-light text-gray-500 dark:text-gray-400 tracking-wider">TENGYUN GAMES</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">腾云游戏致力于为全球玩家创造震撼人心的游戏体验，通过创新技术和精心设计，带你进入无限可能的游戏世界。</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-tencent-blue-100 dark:hover:bg-tencent-blue-900 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-tencent-blue-100 dark:hover:bg-tencent-blue-900 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-tencent-blue-100 dark:hover:bg-tencent-blue-900 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-tencent-blue-100 dark:hover:bg-tencent-blue-900 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:w-2/3">
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 text-sm">关于我们</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">公司简介</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">发展历程</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">团队介绍</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">企业文化</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 text-sm">游戏产品</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">Elyria</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">游戏平台</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">地铁跑酷</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">全部游戏</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 text-sm">加入我们</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">招聘信息</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">员工福利</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">工作环境</a></li>
+                            <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-tencent-blue-600 dark:hover:text-tencent-blue-400 transition-colors">发展机会</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 text-sm">联系我们</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="text-gray-500 dark:text-gray-400">客服邮箱: <br/>support@tengyun.games</li>
+                            <li class="text-gray-500 dark:text-gray-400">商务合作: <br/>business@tengyun.games</li>
+                            <li class="text-gray-500 dark:text-gray-400">媒体垂询: <br/>media@tengyun.games</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center">
+                <p class="text-gray-500 dark:text-gray-400 text-sm">&copy; 2023 腾云游戏 Tengyun Games. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 滚动到顶部按钮 -->
+    <button id="scrollToTop" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-tencent-blue-600 dark:bg-tencent-blue-700 text-white shadow-lg flex items-center justify-center transform transition-all duration-300 hover:bg-tencent-blue-700 dark:hover:bg-tencent-blue-600 hover:scale-110 opacity-0 pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
+
+    <!-- 加载AOS动画库 -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    
+    <script>
+        // 初始化AOS动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 隐藏加载动画
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('loader-gone');
+            }, 1000);
+            
+            // 初始化AOS
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out',
+                once: true
+            });
+            
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 10) {
+                    navbar.classList.add('bg-black/80', 'backdrop-blur-sm', 'py-2', 'shadow-md');
+                    navbar.classList.remove('py-3');
+                } else {
+                    navbar.classList.remove('bg-black/80', 'backdrop-blur-sm', 'py-2', 'shadow-md');
+                    navbar.classList.add('py-3');
+                }
+            });
+            
+            // 移动菜单切换
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            closeMenu.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = '';
+            });
+            
+            // 导航链接的滚动效果
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    // 关闭移动菜单
+                    mobileMenu.classList.add('hidden');
+                    document.body.style.overflow = '';
+                    
+                    // 滚动到目标
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // 滚动到顶部按钮
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.classList.add('opacity-100');
+                    scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                } else {
+                    scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                    scrollToTopBtn.classList.remove('opacity-100');
+                }
+            });
+            
+            scrollToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
